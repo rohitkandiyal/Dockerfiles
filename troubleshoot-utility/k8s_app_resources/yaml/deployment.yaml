@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: troubleshoot-utility-dep
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: troubleshoot-utility
+  template:
+    metadata:
+      labels:
+        app: troubleshoot-utility
+    spec:
+      containers:
+      - image: rohitkandiyal/troubleshoot-utility:1.2
+        name: troubleshoot-utility-container
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        #args:
+        #- CommandPassedIsHERE
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /dynamic
+            port: 80
+        # Using configmap as env var
+        envFrom:
+        - configMapRef:
+            name: troubleshoot-utility-cm
+        # Secret is being added as a volume
+        volumeMounts:
+        - name: foo
+          mountPath: "/etc/foo"
+          readOnly: true
+        - name: podinfo
+          mountPath: /etc/podinfo
+      volumes:
+      - name: foo
+        secret:
+          secretName: troubleshoot-utility-secret
+          optional: false
+      - name: podinfo
+        downwardAPI:
+          items:
+            - path: "podname"
+              fieldRef:
+                fieldPath: metadata.name
+        #    - path: "nodename"
+        #      fieldRef:
+        #        fieldPath: spec.nodeName
