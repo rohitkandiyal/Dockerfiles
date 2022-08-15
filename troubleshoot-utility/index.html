@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Command provided via pod spec is: %%DOCKER_COMMAND%%</h1>
+<h1>Pod Name is :  %%POD_NAME%%</h1>
+<h1>%%POD_NAME%% is hosted on node :  %%NODE_NAME%%</h1>
+<h1>Username provided in ConfigMap is :  %%USER_NAME%%</h1>
+<h1>Password provided via Secret is :  %%PASSWORD%%</h1>
+</body>
+</html>

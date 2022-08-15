@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  app.prop: |
+    username=rohit_kandiyal
+kind: ConfigMap
+metadata:
+  name: troubleshoot-utility-cm
